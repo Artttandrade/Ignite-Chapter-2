@@ -11,10 +11,10 @@ import {
 
 import theme from './src/global/styles/theme';
 
-import { Dashboard } from './src/pages/Dashboard';
 import { View } from 'react-native';
 import { Register } from './src/pages/Register';
-import { CategorySelect } from './src/pages/CategorySelect';
+import { NavigationContainer } from '@react-navigation/native';
+import { AppRoutes } from './src/routes/app.routes';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,7 +41,9 @@ export default function App() {
       }}
     >
       <ThemeProvider theme={theme}>
-        <Register />
+        <NavigationContainer>
+          <AppRoutes />
+        </NavigationContainer>
       </ThemeProvider>
     </View>
   );
