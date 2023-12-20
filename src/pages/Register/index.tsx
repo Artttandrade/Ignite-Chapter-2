@@ -13,6 +13,13 @@ import { TransactionTypeButton } from "../../components/Forms/TransactionTypeBut
 import { CategorySelectButton } from "../../components/Forms/CategorySelectButton";
 import { Modal } from "react-native";
 import { CategorySelect } from "../CategorySelect";
+import { InputForm } from "../../components/Forms/InputForm";
+import { useForm } from "react-hook-form";
+
+interface FormData {
+    name: string;
+    amount: string;
+}
 
 export function Register() {
     const [category, setCategory] = useState({
@@ -22,6 +29,11 @@ export function Register() {
     const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
+    const {
+        control,
+        handleSubmit,
+    } = useForm<any>();
+
     const handleTransactionTypeSelect = (type: 'up' | 'down') => {
         setTransactionType(type);
     }
@@ -30,6 +42,17 @@ export function Register() {
 
     const handleCloseSelectCategoryModal = () => setCategoryModalOpen(false);
 
+    const handleRegister = (form: FormData) => {
+        const data = {
+            name: form.name,
+            amount: form.amount,
+            transactionType,
+            category: category.key
+        }
+
+        console.log(data)
+    };
+
     return (
         <Container>
             <Header >
@@ -37,10 +60,14 @@ export function Register() {
             </Header>
             <Form>
                 <Fields>
-                    <Input
+                    <InputForm
                         placeholder="Nome"
+                        control={control}
+                        name="name"
                     />
-                    <Input
+                    <InputForm
+                        name="amount"
+                        control={control}
                         placeholder="Valor"
                     />
                     <TransactionsTypes>
@@ -57,7 +84,7 @@ export function Register() {
                     </TransactionsTypes>
                     <CategorySelectButton title={category.name} onPress={handleOpenSelectCategoryModal} />
                 </Fields>
-                <Button title="Enviar" />
+                <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
             </Form>
             <Modal visible={categoryModalOpen}>
                 <CategorySelect
