@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Container,
     Fields,
@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import TransactionsService from "../../services/transactions.service";
 
 interface FormData {
     name: string;
@@ -34,8 +34,6 @@ const schema = Yup.object().shape({
 });
 
 export function Register() {
-    const dataKey = '@gofinances:transactions';
-
     const [category, setCategory] = useState({
         key: 'category',
         name: 'Categoria'
@@ -72,13 +70,21 @@ export function Register() {
         }
 
         try {
-            await AsyncStorage.setItem(dataKey, JSON.stringify(data));
-
+            await TransactionsService.addTransaction(data);
         } catch (error) {
             console.log(error)
             Alert.alert("Não foi possível salvar")
         }
     };
+
+    useEffect(() => {
+        async function load() {
+            const data = await TransactionsService.getAllTransactions();
+            console.log(data);
+        }
+
+        load();
+    }, [])
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
