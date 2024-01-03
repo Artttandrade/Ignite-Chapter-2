@@ -1,6 +1,8 @@
 export default interface TransactionDTO {
+    id: string,
     name: string,
     amount: string,
-    transactionType: string,
-    category: string
+    type: 'positive' | 'negative',
+    category: string,
+    date: Date
 }

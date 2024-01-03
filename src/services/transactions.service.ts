@@ -20,6 +20,15 @@ const TransactionsService = {
             console.log(error);
             throw error;
         }
+    },
+
+    removeAll: async () => {
+        try {
+            TransactionRepository.removeAll();
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
     }
 }
 
